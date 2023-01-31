@@ -1,4 +1,4 @@
-using Catalog.Host.Models.Requests.Items;
+using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Response;
 using Catalog.Host.Models.Response.Items;
 using Catalog.Host.Services.Interfaces;
@@ -22,25 +22,9 @@ public class CatalogItemController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Add(CreateUpdateItemRequest request)
+    public async Task<IActionResult> Add(CreateProductRequest request)
     {
         var result = await _catalogItemService.AddAsync(request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
         return Ok(new AddItemResponse<int?>() { Id = result });
-    }
-
-    [HttpPost("{id}")]
-    [ProducesResponseType(typeof(UpdateResponse), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Update(int id, CreateUpdateItemRequest request)
-    {
-        var result = await _catalogItemService.UpdateAsync(id, request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName);
-        return Ok(new UpdateResponse() { IsUpdated = result });
-    }
-
-    [HttpPost("{id}")]
-    [ProducesResponseType(typeof(DeleteResponse), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var result = await _catalogItemService.DeleteAsync(id);
-        return Ok(new DeleteResponse() { IsDeleted = result });
     }
 }

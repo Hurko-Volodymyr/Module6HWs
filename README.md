@@ -1,6 +1,6 @@
 #!!!!!SETUP STEPS!!!!!
 Update host file on your PC
-like this instruction https://www.nublue.co.uk/guides/edit-hosts-file/#:~:text=In%20Windows%2010%20the%20hosts,%5CDrivers%5Cetc%5Chosts.
+   like this instruction https://www.nublue.co.uk/guides/edit-hosts-file/#:~:text=In%20Windows%2010%20the%20hosts,%5CDrivers%5Cetc%5Chosts.
 
 Need to path these lines
 

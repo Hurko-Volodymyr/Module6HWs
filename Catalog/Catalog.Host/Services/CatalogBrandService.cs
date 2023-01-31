@@ -50,34 +50,15 @@ namespace Catalog.Host.Services
 
             public async Task<bool> UpdateAsync(int id, string brand)
             {
-                return await ExecuteSafeAsync(async () =>
-                {
-                    var brandToUpdate = await _catalogBrandRepository.GetByIdAsync(id);
-
-                    if (brandToUpdate == null)
-                    {
-                        return false;
-                    }
-
-                    brandToUpdate.Brand = brand;
-
-                    return await _catalogBrandRepository.UpdateAsync(id, brand);
-                });
+            return await ExecuteSafeAsync(async () =>
+             {
+                return await _catalogBrandRepository.UpdateAsync(id, brand);
+             });
             }
 
             public async Task<bool> DeleteAsync(int id)
             {
-                return await ExecuteSafeAsync(async () =>
-                {
-                    var brandToDelete = await _catalogBrandRepository.GetByIdAsync(id);
-
-                    if (brandToDelete == null)
-                    {
-                        return false;
-                    }
-
-                    return await _catalogBrandRepository.DeleteAsync(id);
-                });
+            return await ExecuteSafeAsync(async () => await _catalogBrandRepository.DeleteAsync(id));
             }
         }
     }

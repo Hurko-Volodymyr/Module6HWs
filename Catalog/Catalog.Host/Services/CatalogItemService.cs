@@ -1,4 +1,5 @@
 using Catalog.Host.Data;
+using Catalog.Host.Repositories;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
 
@@ -29,36 +30,12 @@ public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalo
     {
         return await ExecuteSafeAsync(async () =>
         {
-            var itemToUpdate = await _catalogItemRepository.GetByIdAsync(id);
-
-            if (itemToUpdate == null)
-            {
-                return false;
-            }
-
-            itemToUpdate.Name = name;
-            itemToUpdate.Description = description;
-            itemToUpdate.Price = price;
-            itemToUpdate.AvailableStock = availableStock;
-            itemToUpdate.CatalogBrandId = catalogBrandId;
-            itemToUpdate.CatalogTypeId = catalogTypeId;
-            itemToUpdate.PictureFileName = pictureFileName;
-
             return await _catalogItemRepository.UpdateAsync(id, name, description, price, availableStock, catalogBrandId, catalogTypeId, pictureFileName);
         });
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var itemToDelete = await _catalogItemRepository.GetByIdAsync(id);
-
-        if (itemToDelete == null)
-        {
-            return false;
-        }
-
-        var result = await _catalogItemRepository.DeleteAsync(id);
-
-        return result;
+        return await ExecuteSafeAsync(async () => await _catalogItemRepository.DeleteAsync(id));
     }
 }

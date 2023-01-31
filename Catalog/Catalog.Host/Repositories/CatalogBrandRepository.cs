@@ -44,19 +44,17 @@ namespace Catalog.Host.Repositories
 
         public async Task<bool> UpdateAsync(int id, string brand)
         {
-            var item = await _dbContext.CatalogBrands.FirstOrDefaultAsync(f => f.Id == id);
-            if (item == null)
+            var item = await GetByIdAsync(id);
+            var status = false;
+
+            if (item != null)
             {
-                return false;
+                    _dbContext.CatalogBrands.Update(item);
+                    await _dbContext.SaveChangesAsync();
+                    status = true;
             }
 
-            item!.Id = id;
-            item!.Brand = brand;
-
-            _dbContext.Entry(item).CurrentValues.SetValues(item);
-            await _dbContext.SaveChangesAsync();
-
-            return true;
+            return status;
         }
 
         public async Task<bool> DeleteAsync(int id)

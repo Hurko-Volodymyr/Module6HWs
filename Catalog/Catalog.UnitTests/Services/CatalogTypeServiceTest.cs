@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Catalog.Host.Data.Entities;
+using Catalog.Host.Models.Dtos;
 
 namespace Catalog.UnitTests.Services
 {
@@ -66,15 +67,18 @@ namespace Catalog.UnitTests.Services
         public async Task UpdateAsync_Success()
         {
             // arrange
+            var testId = 1;
+            var testProperty = "testProperty";
+            var testStatus = true;
             _catalogTypeRepository.Setup(s => s.UpdateAsync(
-                It.IsAny<int>(),
-                It.IsAny<string>())).ReturnsAsync(It.IsAny<bool>);
+                It.Is<int>(i => i.Equals(testId)),
+                It.Is<string>(i => i.Equals(testProperty)))).ReturnsAsync(testStatus);
 
             // act
-            var result = await _catalogService.UpdateAsync(_testItem.Id, _testItem.Type);
+            var result = await _catalogService.UpdateAsync(testId, testProperty);
 
             // assert
-            result.Should().BeTrue();
+            result.Should().Be(testStatus);
         }
 
         [Fact]
@@ -93,47 +97,18 @@ namespace Catalog.UnitTests.Services
         }
 
         [Fact]
-        public async Task GetCatalogTypes_Success()
-        {
-            // arrange
-            _catalogTypeRepository.Setup(s => s.UpdateAsync(
-                It.IsAny<int>(),
-                It.IsAny<string>())).ReturnsAsync(It.IsAny<bool>);
-
-            // act
-            var result = await _catalogService.UpdateAsync(_testItem.Id, _testItem.Type);
-
-            // assert
-            result.Should().BeTrue();
-        }
-
-        [Fact]
-        public async Task GetCatalogTypes_Failed()
-        {
-            // arrange
-            _catalogTypeRepository.Setup(s => s.UpdateAsync(
-                It.IsAny<int>(),
-                It.IsAny<string>())).ReturnsAsync(It.IsAny<bool>);
-
-            // act
-            var result = await _catalogService.UpdateAsync(_testItem.Id, _testItem.Type);
-
-            // assert
-            result.Should().BeTrue();
-        }
-
-        [Fact]
         public async Task DeleteAsync_Success()
         {
             // arrange
-            _catalogTypeRepository.Setup(s => s.DeleteAsync(
-                It.IsAny<int>())).ReturnsAsync(It.IsAny<bool>);
+            var testId = 1;
+            var testStatus = true;
+            _catalogTypeRepository.Setup(s => s.DeleteAsync(It.Is<int>(i => i == testId))).ReturnsAsync(testStatus);
 
             // act
-            var result = await _catalogService.DeleteAsync(_testItem.Id);
+            var result = await _catalogService.DeleteAsync(testId);
 
             // assert
-            result.Should().BeTrue();
+            result.Should().Be(testStatus);
         }
 
         [Fact]

@@ -1,6 +1,7 @@
 ﻿using Catalog.Host.Data;
 using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Response.Items;
+using Catalog.Host.Repositories;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
 
@@ -52,32 +53,13 @@ namespace Catalog.Host.Services
         {
             return await ExecuteSafeAsync(async () =>
             {
-                var typeToUpdate = await _catalogTypeRepository.GetByIdAsync(id);
-
-                if (typeToUpdate == null)
-                {
-                    return false;
-                }
-
-                typeToUpdate.Type = type;
-
                 return await _catalogTypeRepository.UpdateAsync(id, type);
             });
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            return await ExecuteSafeAsync(async () =>
-            {
-                var typeToDelete = await _catalogTypeRepository.GetByIdAsync(id);
-
-                if (typeToDelete == null)
-                {
-                    return false;
-                }
-
-                return await _catalogTypeRepository.DeleteAsync(id);
-            });
+                return await ExecuteSafeAsync(async () => await _catalogTypeRepository.DeleteAsync(id));
         }
     }
 }
